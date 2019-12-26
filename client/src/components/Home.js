@@ -45,17 +45,23 @@ class Home extends React.Component {
     handleDelete = (customerId) => {
         // var customerId = e.target.getAttribute('data-id');
         let self = this;
-        console.log('customer Id', customerId);
-        axios.post(`http://localhost:5000/delete`, {
-            customerId
-        })
-            .then(function (response) {
-                console.log(response);
-                self.getTableData();
+        var r = window.confirm("Are You Sure You Want To Delete Customer Details?");
+        if (r == true) {
+            console.log('customer Id', customerId);
+            axios.post(`http://localhost:5000/delete`, {
+                customerId
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                    self.getTableData();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            return
+        }
+
 
     }
 
