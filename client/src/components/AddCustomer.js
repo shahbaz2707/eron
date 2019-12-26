@@ -2,54 +2,82 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const AddCustomer = () => {
+const AddCustomer = (props) => {
 
-    const [show, setShow] = useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        city: '',
-        dob: '',
-        mobile: '',
-    });
+    // const [show, setShow] = useState(false);
+    // const [formData, setFormData] = useState({
+    //     name: '',
+    //     city: '',
+    //     dob: '',
+    //     mobile: '',
+    // });
 
     const {
+        id,
         name,
         city,
         dob,
-        mobile
-    } = formData;
+        mobile,
+        onChange,
+        showPopup,
+        handleClose,
+        handleShow
+    } = props;
 
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleSave = (e) => {
-        console.log('first name', name);
-        axios.post(`http://localhost:5000/add`, {
-            name,
-            city,
-            dob,
-            mobile
-        })
-            .then(function (response) {
-                console.log(response);
-                handleClose();
-                window.location.reload();
+        console.log('id', id);
+        console.log('city', city);
+        console.log('dob', dob);
+        console.log('mobile', mobile);
+        if (id) {
+            axios.post(`http://localhost:5000/update`, {
+                id,
+                name,
+                city,
+                dob,
+                mobile
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                    handleClose();
+                    window.location.reload();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        } else {
+            axios.post(`http://localhost:5000/add`, {
+                name,
+                city,
+                dob,
+                mobile
+            })
+                .then(function (response) {
+                    console.log(response);
+                    handleClose();
+                    window.location.reload();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        }
 
     }
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
     return (
         <>
             <div className="home">
                 <Button variant="primary" onClick={handleShow}>
                     Add Customer
-            </Button>
+                </Button>
 
-                <Modal show={show} onHide={handleClose}>
+                <Modal show={showPopup} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Customer Details</Modal.Title>
                     </Modal.Header>

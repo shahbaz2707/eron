@@ -55,6 +55,27 @@ app.post('/add', (req, res) => {
     // res.send('hello worlds');
 });
 
+app.post('/update', (req, res) => {
+    console.log('req--------------', req.body);
+    const {id, name, city, dob, mobile} = req.body;
+    // res.send('everything ok');
+    try{
+        con.connect(function(err) {
+            var sql = `UPDATE customer SET name="${name}", city="${city}", dob="${dob}", mobile="${mobile}" WHERE id=${id}`;
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("1 record updated ");
+                res.json(result);
+            });
+          });
+
+    } catch(err){
+        console.log(err);
+    }
+   
+    // res.send('hello worlds');
+});
+
 app.post('/delete', (req, res) => {
     console.log('req--------------', req.body.id);
     const {customerId} = req.body;

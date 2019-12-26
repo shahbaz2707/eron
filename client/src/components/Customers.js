@@ -6,44 +6,10 @@ class Customers extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            customers: [],
-        }
-    }
-
-    componentDidMount(){
-       this.getTableData();
-    }
-
-    getTableData = () => {
-        axios.get(`http://localhost:5000/customers`)
-        .then(res => {
-            console.log(res);
-          const customers = res.data;
-        
-          this.setState({ customers });
-        })
-    }
-
-    handleDelete = (customerId) => {
-        // var customerId = e.target.getAttribute('data-id');
-        let self = this;
-        console.log('customer Id', customerId);
-        axios.post(`http://localhost:5000/delete`, {
-            customerId
-        })
-            .then(function (response) {
-                console.log(response);
-                self.getTableData();
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
     }
 
   render() {
-    const {customers} = this.state;
+    const {customers, handleDelete, handleEdit} = this.props;
     return (
       <table className="table table-striped">
           <thead>
@@ -60,9 +26,12 @@ class Customers extends React.Component {
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.city}</td>
-                        <td>{item.dob}</td>
+                        <td>{item.dob.substring(0, 10)}</td>
                         <td>{item.mobile}</td>
-                        <td><button type="button" data-id={item.id} onClick={e => this.handleDelete(item.id)}><span className="fa fa-trash"></span></button></td>
+                        <td>
+                            <button type="button" data-id={item.id} onClick={e => handleDelete(item.id)}><span className="fa fa-trash"></span></button>
+                            <button type="button" onClick={e => handleEdit(item)}><span className="fa fa-edit"></span></button>
+                        </td>
                     </tr>)
                 })}
             </tbody>

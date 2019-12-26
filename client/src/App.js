@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import logo from './logo.svg';
-import Customers from './components/Customers';
+import Home from './components/Home';
 import AddCustomer from './components/AddCustomer';
 import './App.css';
 
@@ -10,8 +10,7 @@ function App() {
       <div className="container">
             <div className="row">
                 <div className="offset-2 col-md-8">
-                  <AddCustomer />
-                  <Customers />
+                  <Home />
                 </div>
             </div>
       </div>
